@@ -41,9 +41,20 @@ builder.Services
             )
         };
     });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("OpenCors", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
+app.UseCors("OpenCors");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
