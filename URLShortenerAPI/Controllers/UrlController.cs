@@ -42,7 +42,7 @@ namespace URLShortenerAPI.Controllers
             });
         }
 
-        [HttpGet("/user/{uid}")]
+        [HttpGet("user/{uid}")]
         public async Task<IActionResult> GetAll(int uid)
         {
             var urls = await _service.GetAllUrl(uid);
