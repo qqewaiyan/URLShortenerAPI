@@ -39,7 +39,7 @@ namespace URLShortenerAPI.Controllers
 
             return result.Status == APIStatus.Success
                 ? Ok(result)
-                : Unauthorized(result);
+                : BadRequest(result);
         }
 
         // -------------------------
@@ -52,7 +52,7 @@ namespace URLShortenerAPI.Controllers
 
             return result.Status == APIStatus.Success
                 ? Ok(result)
-                : Unauthorized(result);
+                : BadRequest(result);
         }
     }
 }

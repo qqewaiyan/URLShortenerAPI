@@ -41,6 +41,7 @@ namespace URLShortenerAPI.Service
 
             var user = new UserAccount
             {
+                Name = dto.Name,
                 Email = dto.Email,
                 PasswordHash = _hash.HashPassword(dto.Password)
             };

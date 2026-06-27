@@ -29,7 +29,7 @@ namespace URLShortenerAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var user = await _userService.GetByIdAsync(id);
+            var user = await _userService.GetUserResponseById(id);
 
             if (user == null)
                 return NotFound();

@@ -21,18 +21,33 @@ namespace URLShortenerAPI.Controllers
         [HttpPost("shorten")]
         public async Task<IActionResult> Shorten([FromBody] CreateUrlRequest req)
         {
-            if(req.userId <=0 )
+            if (req.userId <= 0)
             {
                 return BadRequest("UserId is required");
             }
-            var code = await _service.CreateShortUrlAsync(req.Url, req.userId);
 
-            var shortUrl = $"{Request.Scheme}://{Request.Host}/{code}";
+            var url = await _service.CreateShortUrlAsync(req.Url, req.userId) ?? new Entity.Url();
+
+            var shortUrl = $"{Request.Scheme}://{Request.Host}/{url.ShortCode}";
 
             return Ok(new
             {
-                shortUrl
+                id = url.Id,
+                originalUrl = url.OriginalUrl,
+                shortCode = url.ShortCode,
+                shortUrl,
+                clicks = url.ClickCount,
+                createdAt = url.CreatedAt,
+                userId = url.UserId
             });
+        }
+
+        [HttpGet("/user/{uid}")]
+        public async Task<IActionResult> GetAll(int uid)
+        {
+            var urls = await _service.GetAllUrl(uid);
+
+            return Ok(urls);
         }
 
         [HttpGet("{code}")]
@@ -44,6 +59,17 @@ namespace URLShortenerAPI.Controllers
                 return NotFound();
 
             return Redirect(url);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var deleted = await _service.DeleteAsync(id);
+
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }
